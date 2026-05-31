@@ -64,26 +64,32 @@ graph LR
 ### 目录结构
 
 ```text
-.
-├── App/                 # 应用层
-│   └── main.c
-├── Device/              # 设备层（芯片逻辑封装）
-│   ├── ld2410b.c / .h
-│   ├── ld6002.c  / .h
-│   ├── dht11.c   / .h
-│   ├── esp8266.c / .h
-│   └── oled.c    / .h
-│   └── Bemfa.c    / .h
-├── Component/           # 组件层（可复用模块）
-│   ├── filter.c     / .h    # 呼吸频率三道过滤
-│   ├── sedentary.c  / .h    # 久坐识别状态机
-│   └── ringbuffer.c / .h    # 环形缓冲区
-├── Driver/              # 驱动层
-│   ├── usart.c / .h
-│   ├── gpio.c  / .h
-│   └── timer.c / .h
-├── Doc/                 # 文档、框图、演示截图
-└── README.md
+
+│   │       ├── oled.c
+│   │       ├── oled.h
+│   │       └── oled_font.h
+│   │
+│   ├── Component/                  # 组件层：可复用算法
+│   │   ├── ringbuffer/             # 环形缓冲区（中断解耦核心）
+│   │   │   ├── ringbuffer.c
+│   │   │   └── ringbuffer.h
+│   │   ├── filter/                 # 呼吸三道过滤
+│   │   │   ├── filter.c
+│   │   │   └── filter.h
+│   │   └── sedentary/              # 久坐识别状态机
+│   │       ├── sedentary.c
+│   │       └── sedentary.h
+│   │
+│   └── App/                        # 应用层：业务调度
+│       ├── app_main.c
+│       └── app_main.h
+│
+├── tools/                          # 调试工具（加分项）
+│   ├── frame_parser.py             # PC 端 LD6002 帧解析验证脚本
+│   └── serial_logger.py            # 串口日志记录
+│
+└── tests/                          # 单元测试（可选，加分项）
+    └── test_ringbuffer.c
 ```
 
 ---
