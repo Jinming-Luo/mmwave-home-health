@@ -64,11 +64,62 @@ graph LR
 ### 目录结构
 
 ```text
-
+mmwave-home-health/
+│
+├── README.md                       # 仓库主页（已给你模板）
+├── LICENSE
+├── .gitignore
+│
+├── docs/                           # 文档
+│   ├── architecture.md             # 四级分层架构说明
+│   ├── protocol-ld2410b.md         # LD2410B 23 字节帧解析说明
+│   ├── protocol-ld6002.md          # LD6002 变长帧 + 双校验和说明
+│   ├── hardware-bom.md             # 物料清单（138 元成本拆解）
+│   ├── test-report.md              # 性能测试报告
+│   └── images/                     # 框图、原理图截图、OLED 演示图
+│       ├── system-architecture.png
+│       ├── software-layers.png
+│       ├── ld6002-frame-format.png
+│       └── demo-oled.jpg
+│
+├── hardware/                       # 硬件相关（有就放）
+│   ├── schematic/                  # 原理图（嘉立创 EDA 导出 PDF）
+│   └── pcb/                        # PCB 文件
+│
+├── firmware/                       # 固件代码（核心）
+│   ├── MDK-ARM/                    # Keil 工程文件
+│   │   └── project.uvprojx
+│   │
+│   ├── Core/                       # 启动 + main
+│   │   ├── Inc/
+│   │   │   └── stm32f10x_conf.h
+│   │   └── Src/
+│   │       ├── main.c
+│   │       ├── stm32f10x_it.c      # 中断服务函数集中地
+│   │       └── system_stm32f10x.c
+│   │
+│   ├── Driver/                     # 驱动层：寄存器/外设操作
+│   │   ├── bsp_usart.c / .h        # UART 配置 + 中断
+│   │   ├── bsp_gpio.c  / .h
+│   │   ├── bsp_timer.c / .h
+│   │   └── bsp_i2c.c   / .h
+│   │
+│   ├── Device/                     # 设备层：芯片驱动
+│   │   ├── ld2410b/
+│   │   │   ├── ld2410b.c
+│   │   │   └── ld2410b.h           # 23 字节帧解析
+│   │   ├── ld6002/
+│   │   │   ├── ld6002.c
+│   │   │   └── ld6002.h            # 9 状态解析机
+│   │   ├── dht11/
+│   │   ├── esp8266/                # AT 指令封装
+│   │   │   ├── esp8266.c
+│   │   │   ├── esp8266.h
+│   │   │   └── bemfa.c / .h        # 巴法云协议封装
+│   │   └── oled/
 │   │       ├── oled.c
 │   │       ├── oled.h
 │   │       └── oled_font.h
-│   │
 │   ├── Component/                  # 组件层：可复用算法
 │   │   ├── ringbuffer/             # 环形缓冲区（中断解耦核心）
 │   │   │   ├── ringbuffer.c
